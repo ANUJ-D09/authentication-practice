@@ -28,14 +28,32 @@ app.post('/signup', function(req, res) {
     users.push({
         userName: userName,
         passWord: passWord
-    })
-    res.json({ message: "hey" })
+    });
+
+    console.log(users);
+    res.json({ message: "You are signed up" });
 });
 
 app.post('/signin', function(req, res) {
     const userName = req.body.username;
     const passWord = req.body.passWord;
 
+    let founduser = null;
+
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].userName === userName && users[i].passWord === passWord) {
+            founduser = users[i];
+            break;
+        }
+    }
+
+    if (founduser) {
+        const token = generateToken();
+        founduser.token = token; // assign token to the matched user
+        res.json({ message: "Sign in successful", token });
+    } else {
+        res.status(401).json({ message: "Invalid username or password" });
+    }
 });
 
 app.listen(port, () => {
