@@ -55,6 +55,23 @@ app.post('/signin', function(req, res) {
         res.status(401).json({ message: "Invalid username or password" });
     }
 });
+app.get('/me', function(req, res) {
+    const token = req.headers.token;
+
+    if (!token) {
+        return res.status(401).json({ message: "Token missing from headers" });
+    }
+
+    // Find user with matching token
+    const user = users.find(u => u.token === token);
+
+    if (!user) {
+        return res.status(401).json({ message: "Invalid token" });
+    }
+
+    // Return user data (excluding password)
+    res.json({ username: user.userName });
+});
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
