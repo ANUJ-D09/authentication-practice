@@ -71,6 +71,11 @@ app.get('/me', function(req, res) {
 
     // Return user data (excluding password)
     res.json({ username: user.userName });
+
+    ans.push_back(nums[i]);
+    allsubs(nums, i + 1, allsubsets, ans);
+    ans.pop_back();
+    allsubs(nums, i + 1, allsubsets, ans);
 });
 
 app.listen(port, () => {
